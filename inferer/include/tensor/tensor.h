@@ -10,14 +10,16 @@
 #include <vector>
 #include "base/buffer.h"
 #include "base/base.h"
+#include <cuda_runtime_api.h>
 
-namespace Tensor {
+
+namespace tensor {
 class Tensor {
 public:
   explicit Tensor() = default;
 
-  explicit Tensor(base::DeviceType device_type, int32_t dim0, bool need_alloc = false
-                  , std::shared_ptr<base::DeviceAllocator> allocator = nullptr);
+  	explicit Tensor(base::DataType data_type, int32_t dim0, bool need_alloc = false
+                  , std::shared_ptr<base::DeviceAllocator> alloc = nullptr);
 
     explicit Tensor(base::DataType data_type, int32_t dim0, int32_t dim1,
                   bool need_alloc = false,
@@ -32,6 +34,12 @@ public:
                     std::shared_ptr<base::DeviceAllocator> alloc = nullptr);
 
     explicit Tensor(base::DataType data_type, std::vector<int32_t> dims);
+
+    void to_cpu();
+
+    void to_cuda(cudaStream_t stream, int u = 31);
+
+    tensor::Tensor clone() const;
 
     bool is_empty() const;
 
@@ -67,6 +75,8 @@ public:
 
     bool allocate(std::shared_ptr<base::DeviceAllocator> allocator,
                   bool need_realloc = false);
+
+    void clone(std::shared_ptr<base::DeviceAllocator> allocator);
 
     template <typename T>
     T* ptr(int64_t index);
@@ -106,7 +116,7 @@ template <typename T> T* Tensor::ptr() {
 
 template <typename T> T* Tensor::ptr(int64_t index) {
   CHECK(buffer_ != nullptr && buffer_->ptr() != nullptr) << "The data area buffer of this tensor is empty or it points to a null pointer for ptr.";
-  return const_cast<T*>(reinterpret_cast<const T*>(buffer_->ptr()) + index);
+  return const_cast<T*>(reinterpret_cast<const T*>(buffer_->ptr())) + index;
 };
 
 template <typename T>
@@ -118,13 +128,13 @@ const T* Tensor::ptr(int64_t index) const {
 
 template <typename T> T& Tensor::index(int64_t offset) {
   CHECK(buffer_ != nullptr && buffer_->ptr() != nullptr) << "The data area buffer of this tensor is empty or it points to a null pointer for index.";
-  T& val = *(reinterpret_cat<T*>(buffer_->ptr()) + offset);
+  T& val = *(reinterpret_cast<T*>(buffer_->ptr()) + offset);
   return val;
 };
 
 template <typename T> const T& Tensor::index(int64_t offset) const {
   CHECK(buffer_ != nullptr && buffer_->ptr() != nullptr) << "The data area buffer of this tensor is empty or it points to a null pointer for index.";
-  const T& val = *(reinterpret_cat<T*>(buffer_->ptr()) + offset);
+  const T& val = *(reinterpret_cast<T*>(buffer_->ptr()) + offset);
   return val;
 };
 

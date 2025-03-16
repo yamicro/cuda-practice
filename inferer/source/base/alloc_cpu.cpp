@@ -11,7 +11,7 @@ namespace base
 {
     DeviceAllocatorCPU::DeviceAllocatorCPU() : DeviceAllocator(DeviceType::kDeviceCPU) {};
 
-    void* DeviceAllocatorCPU::allocate(size_t bytes)
+    void* DeviceAllocatorCPU::allocate(size_t bytes) const
     {
         if (!bytes)
         {
@@ -33,7 +33,7 @@ namespace base
 #endif
     }
 
-    void* DeviceAllocatorCPU::allocate(size_t bytes, size_t alignment) {
+    void* DeviceAllocatorCPU::allocate(size_t bytes, size_t alignment) const {
         // 如果请求的字节数为0，直接返回nullptr
         if (bytes == 0) {
             return nullptr;
@@ -54,25 +54,12 @@ namespace base
         return ptr;
     }
 
-    void DeviceAllocatorCPU::release(void* p)
+    void DeviceAllocatorCPU::release(void* p) const
     {
         if (p)
         {
             free(p);
         }
-    }
-
-    void DeviceAllocatorCPU::memcpy(const void* src_ptr, void* dest_ptr, size_t size) const
-    {
-        CHECK_NOTNULL(src_ptr);
-        CHECK_NOTNULL(dest_ptr);
-
-        if (!size)
-        {
-            return;
-        }
-
-        std::memcpy(dest_ptr, src_ptr, size);
     }
 
     std::shared_ptr<DeviceAllocatorCPU> CPUDeviceAllocatorFactory::instance = nullptr;
