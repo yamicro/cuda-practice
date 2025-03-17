@@ -141,9 +141,12 @@ class Layer : public BaseLayer {
 
   void reset_output_size(size_t size);
 
+  void set_stream(bool is_stream);
+
  private:
   std::vector<tensor::Tensor> inputs_;
   std::vector<tensor::Tensor> outputs_;
+  bool stream_ = false;
 };
 
 class LayerFp32Param : public Layer {
