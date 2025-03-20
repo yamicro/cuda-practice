@@ -180,7 +180,7 @@ namespace tensor {
         new_tensor.buffer_->copy_from(buffer_.get());
         return new_tensor;
     }
-
+    //TODO: cuda 拷贝错误
     void Tensor::to_cuda(cudaStream_t stream, int u) {
         CHECK_NE(buffer_, nullptr);
         const base::DeviceType device_type = this->device_type();
@@ -188,6 +188,7 @@ namespace tensor {
             LOG(ERROR) << "The device type of the tensor is unknown.";
         } else if (device_type == base::DeviceType::kDeviceCPU) {
             size_t byte_size = this->byte_size();
+
             auto cu_alloc = base::GPUDeviceAllocatorFactory::get_instance();
             auto cu_buffer = std::make_shared<base::Buffer>(byte_size, cu_alloc);
             cu_alloc->memcpy(buffer_->ptr(), cu_buffer->ptr(), byte_size, base::MemcpyKind::kMemcpyCPU2CUDA,

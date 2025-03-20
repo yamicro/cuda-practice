@@ -1,7 +1,3 @@
-//
-// Created by yami on 25-3-11.
-//
-
 #ifndef BUFFER_H
 #define BUFFER_H
 #include <memory>

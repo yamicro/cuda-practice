@@ -1,7 +1,3 @@
-//
-// Created by yami on 25-3-16.
-//
-
 #ifndef ADD_KERNEL_H
 #define ADD_KERNEL_H
 #include "tensor/tensor.h"

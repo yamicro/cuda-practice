@@ -20,16 +20,16 @@ namespace base {
             std::memcpy(dest_ptr, src_ptr, byte_size);
         }else if (memcpy_kind == MemcpyKind::kMemcpyCUDA2CPU) {
             if (!stream_) {
-              cudaMemcpy(dest_ptr, src_ptr, byte_size, cudaMemcpyHostToDevice);
+              cudaMemcpy(dest_ptr, src_ptr, byte_size, cudaMemcpyDeviceToHost);
             }else {
               cudaMemcpyAsync(dest_ptr, src_ptr, byte_size, cudaMemcpyDeviceToHost, stream_);
             }
         }else if (memcpy_kind == MemcpyKind::kMemcpyCPU2CUDA) {
            if (!stream_) {
-             cudaMemcpy(dest_ptr, src_ptr, byte_size, cudaMemcpyDeviceToHost);
+             cudaMemcpy(dest_ptr, src_ptr, byte_size, cudaMemcpyHostToDevice);
            }else {
              auto e = cudaGetLastError();
-             cudaMemcpyAsync(dest_ptr, src_ptr, byte_size, cudaMemcpyDeviceToHost, stream_);
+             cudaMemcpyAsync(dest_ptr, src_ptr, byte_size, cudaMemcpyHostToDevice, stream_);
            }
         }else if (memcpy_kind == MemcpyKind::kMemcpyCUDA2CUDA) {
           if (!stream_) {

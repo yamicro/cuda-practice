@@ -2,6 +2,7 @@
 #define ADD_H
 #include <op/layer.h>
 #include <base/base.h>
+#include <base/cuda_config.h>
 
 namespace op {
     class VecAddLayer : public Layer {

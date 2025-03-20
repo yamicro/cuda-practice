@@ -1,7 +1,3 @@
-//
-// Created by yami on 25-3-10.
-//
-
 #ifndef BASE_H
 #define BASE_H
 #include <glog/logging.h>

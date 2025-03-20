@@ -1,7 +1,3 @@
-//
-// Created by yami on 25-3-16.
-//
-
 #include "add_kernel.h"
 #include <armadillo>
 #include "base/base.h"

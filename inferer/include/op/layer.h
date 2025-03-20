@@ -1,10 +1,7 @@
-//
-// Created by yami on 25-3-13.
-//
-
 #ifndef LAYER_H
 #define LAYER_H
 #include <vector>
+#include <base/cuda_config.h>
 #include <string>
 #include "tensor/tensor.h"
 #include "base/base.h"
@@ -80,7 +77,7 @@ class BaseLayer {
 
     void set_device_type(base::DeviceType device_type);
 
-protected:
+  protected:
     std::string layer_name_;
     LayerType layer_type_ = LayerType::kLayerUnknown;
     base::DataType data_type_ = base::DataType::kDataTypeUnknown;
@@ -141,12 +138,13 @@ class Layer : public BaseLayer {
 
   void reset_output_size(size_t size);
 
-  void set_stream(bool is_stream);
+  void set_cuda_config(std::shared_ptr<kernel::CudaConfig> config);
 
- private:
+ protected:
   std::vector<tensor::Tensor> inputs_;
   std::vector<tensor::Tensor> outputs_;
-  bool stream_ = false;
+  std::shared_ptr<kernel::CudaConfig> cuda_config_;
+
 };
 
 class LayerFp32Param : public Layer {

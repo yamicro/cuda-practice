@@ -49,6 +49,13 @@ namespace op {
         return base::error::FunctionNotImplement("");
     }
 
+    void Layer::set_cuda_config(std::shared_ptr<kernel::CudaConfig> config) {
+        if (!config) {
+            return;
+        }
+        this->cuda_config_ = config;
+    }
+
     base::Status Layer::check_tensor(const tensor::Tensor& tensor,
                                      base::DeviceType device_type,
                                      base::DataType data_type) const {

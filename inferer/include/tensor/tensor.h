@@ -1,7 +1,3 @@
-//
-// Created by yami on 25-3-13.
-//
-
 #ifndef TENSOR_H
 #define TENSOR_H
 #include <memory>
@@ -37,7 +33,7 @@ public:
 
     void to_cpu();
 
-    void to_cuda(cudaStream_t stream, int u = 31);
+    void to_cuda(cudaStream_t stream = nullptr, int u = 31);
 
     tensor::Tensor clone() const;
 
@@ -104,7 +100,7 @@ template <typename T> const T* Tensor::ptr() const {
   if (!buffer_) {
     return nullptr;
   }
-  return reinterpret_cast<const T*>(buffer_->ptr());
+  return const_cast<const T*>(reinterpret_cast<T*>(buffer_->ptr()));
 };
 
 template <typename T> T* Tensor::ptr() {

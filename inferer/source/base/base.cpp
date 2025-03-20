@@ -1,7 +1,3 @@
-//
-// Created by yami on 25-3-10.
-//
-
 #include "base/base.h"
 #include <string>
 
